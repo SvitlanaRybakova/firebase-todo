@@ -28,7 +28,7 @@ import { collection, getDocs } from "firebase/firestore";
 
 const TodosPage = () => {
 	const [todos, setTodos] = useState([]);
-	const [setLoading, setLoadind] = useState(true);
+	const [loading, setLoadind] = useState(true);
 
 	useEffect(async () => {
 		// get collection reference
@@ -53,7 +53,7 @@ const TodosPage = () => {
 				<h1>Todos</h1>
 				<Button onClick={() => {}}>Refresh</Button>
 			</div>
-
+		{loading && <p>Loading...</p>}
 			<ListGroup>
 				{todos.map((todo, index) => (
 					<ListGroup.Item
