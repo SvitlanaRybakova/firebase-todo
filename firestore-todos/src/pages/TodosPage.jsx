@@ -30,14 +30,22 @@ const TodosPage = () => {
 	const [todos, setTodos] = useState([]);
 	const [setLoading, setLoadind] = useState(true);
 
-	useEffect(async() => {
+	useEffect(async () => {
 		// get collection reference
-		const colRef = collection(db, 'todos')
+		const colRef = collection(db, "todos");
 		// create snabshot
 		const snabshot = await getDocs(colRef);
-	
-	}, []);
 
+		// get data from firestore
+		const data = snabshot.docs.map((doc) => {
+			return {
+				id: doc.id,
+				...doc.data(), //title, completed
+			};
+		});
+		setTodos(data);
+		setLoadind(false);
+	}, []);
 
 	return (
 		<Container className="py-3">
