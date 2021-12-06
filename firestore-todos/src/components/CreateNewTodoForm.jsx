@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { Form, Button } from "react-bootstrap";
 import { db } from "../firebase";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 const CreateNewTodoForm = () => {
 	const inputTitle = useRef();
@@ -20,10 +20,10 @@ const CreateNewTodoForm = () => {
 		const docRef = await addDoc(collection(db, "todos"), {
 			title: inputTitle.current.value,
 			completed: false,
-    });
-    
-    inputTitle.current.value='';
-    
+			timestamp: serverTimestamp(),
+		});
+
+		inputTitle.current.value = "";
 	};
 	return (
 		<Form onSubmit={handleSubmit}>

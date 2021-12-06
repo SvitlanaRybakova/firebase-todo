@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { db } from "../firebase";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 
 const useStreamCollection = (col) => {
 	const [data, setData] = useState();
@@ -9,18 +9,21 @@ const useStreamCollection = (col) => {
 	useEffect(() => {
 		// get reference to collection
 		const ref = collection(db, col);
+		// create a query
+		const q = query(ref, orderBy("timestamp", "desc"));
+		const unsubscribe = onSnapshot(
+			q, (snapshot) => {
+				const data = snapshot.docs.map((doc) => {
+					return {
+						id: doc.id,
+						...doc.data(), // title, completed
+					};
+				});
 
-		const unsubscribe = onSnapshot(ref, (snapshot) => {
-			const data = snapshot.docs.map((doc) => {
-				return {
-					id: doc.id,
-					...doc.data(), // title, completed
-				};
-			});
-
-			setData(data);
-			setLoading(false);
-		});
+				setData(data);
+				setLoading(false);
+			}
+		);
 
 		return unsubscribe;
 	}, []);
