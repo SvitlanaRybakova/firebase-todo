@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { db } from "../firebase";
 import { collection, getDocs } from "firebase/firestore";
 
+
 const useGetCollection = (col) => {
 	const [data, setData] = useState([]);
 	const [loading, setLoadind] = useState(true);
 
-	useEffect(async () => {
+	const getData = async () => {
+		console.log('getData triggered');
 		// get collection reference
 		const colRef = collection(db, col);
 		// create snabshot
@@ -19,11 +21,15 @@ const useGetCollection = (col) => {
 				...doc.data(), //title, completed
 			};
 		});
-    setData(result);
+		setData(result);
 		setLoadind(false);
+	};
+
+	useEffect(async () => {
+		getData()
 	}, []);
 
-	return {  data, loading };
+	return {  data, loading, getData };
 };
 
 export default useGetCollection;
