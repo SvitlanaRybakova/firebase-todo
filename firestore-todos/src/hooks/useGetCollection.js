@@ -8,7 +8,6 @@ const useGetCollection = (col) => {
 	const [loading, setLoadind] = useState(true);
 
 	const getData = async () => {
-		console.log('getData triggered');
 		// get collection reference
 		const colRef = collection(db, col);
 		// create snabshot

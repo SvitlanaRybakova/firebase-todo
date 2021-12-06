@@ -7,7 +7,7 @@ import { doc, updateDoc, deleteDoc } from "firebase/firestore";
 
 const TodoPage = () => {
 	const { id } = useParams();
-	const { getTodo, loading, data } = useGetTodo(id);
+	const { loading, data } = useGetTodo(id);
 	const navigate = useNavigate();
 
 	const toggleTodo = async () => {
@@ -15,7 +15,7 @@ const TodoPage = () => {
 		await updateDoc(ref, {
 			completed: !data.completed,
 		});
-		getTodo();
+		// getTodo();
 	};
 
 	const deleteTodo = async () => {
@@ -33,7 +33,7 @@ const TodoPage = () => {
 					<div className="d-flex justify-content-between align-items-center mb-3">
 						<h1>{data.title}</h1>
 
-						<Button onClick={getTodo}>Refresh</Button>
+						{/* <Button onClick={getTodo}>Refresh</Button> */}
 					</div>
 					<p className="display-1">{data.completed ? "🥳" : "🥵"}</p>
 					<ButtonGroup className="todo-actions">
