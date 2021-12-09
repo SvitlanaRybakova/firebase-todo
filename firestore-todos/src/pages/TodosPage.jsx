@@ -1,9 +1,11 @@
+import { useFirestoreQueryData } from "@react-query-firebase/firestore";
+import { collection, orderBy, query } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { Button, Container, ListGroup } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import CreateNewTodoForm from "../components/CreateNewTodoForm";
 import useGetTodos from "../hooks/useGetTodos";
-
+import { db } from "../firebase";
 // const todos = [
 // 	{
 // 		id: '14c9b3244b4a',
@@ -28,15 +30,20 @@ import useGetTodos from "../hooks/useGetTodos";
 // ]
 
 const TodosPage = () => {
-	const { data, loading } = useGetTodos();
-console.log(data);
+	// const { data, loading } = useGetTodos();
+
+	const queryFef = query(collection(db, "todos"), orderBy("timestamp","desc"));
+	const { data, isLoading } = useFirestoreQueryData(["todos"], queryFef, {
+		subscribe: true,
+	});
+	console.log(data);
 	return (
 		<Container className="py-3">
 			<div className="d-flex justify-content-between align-items-center mb-3">
 				<h1>Todos</h1>
 				{/* <Button onClick={() => {getData()}}>Refresh</Button> */}
 			</div>
-			{loading && <p>Loading...</p>}
+			{isLoading && <p>Loading...</p>}
 			{data && (
 				<>
 					{data.length ? (
