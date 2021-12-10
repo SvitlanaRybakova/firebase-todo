@@ -9,20 +9,26 @@ const Navigation = () => {
 		<Navbar bg="dark" variant="dark" expand="md">
 			<Container>
 				<Link to="/" className="navbar-brand">
-					<span role="img" aria-label="A note with a pen">📝</span> Firestore Todos
+					<span role="img" aria-label="A note with a pen">
+						📝
+					</span>{" "}
+					Firestore Todos
 				</Link>
 
 				<Navbar.Toggle aria-controls="basic-navbar-nav" />
 				<Navbar.Collapse id="basic-navbar-nav">
 					<Nav className="ms-auto">
-
-						<NavLink to="/todos" className="nav-link">Todos</NavLink>
-
+						<NavLink to="/todos" className="nav-link">
+							Todos
+						</NavLink>
+						<NavLink to="/login" className="nav-link">
+							login
+						</NavLink>
 					</Nav>
 				</Navbar.Collapse>
 			</Container>
 		</Navbar>
-	)
+	);
 }
 
 export default Navigation

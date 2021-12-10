@@ -3,9 +3,10 @@ import { collection, orderBy, query } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { Button, Container, ListGroup } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { db } from "../firebase";
 import CreateNewTodoForm from "../components/CreateNewTodoForm";
 import useGetTodos from "../hooks/useGetTodos";
-import { db } from "../firebase";
+import { firebaseTimestampToString  } from "../helpers/time";
 // const todos = [
 // 	{
 // 		id: '14c9b3244b4a',
@@ -35,6 +36,7 @@ const TodosPage = () => {
 	const queryFef = query(collection(db, "todos"), orderBy("timestamp","desc"));
 	const { data, isLoading } = useFirestoreQueryData(["todos"], queryFef, {
 		subscribe: true,
+		idField: "id",
 	});
 	console.log(data);
 	return (
@@ -48,26 +50,32 @@ const TodosPage = () => {
 				<>
 					{data.length ? (
 						<ListGroup>
-							{data.map((todo, index) => (
-								<ListGroup.Item
-									style={{
-										display: "flex",
-										justifyContent: "space-between",
-									}}
-									as={Link}
-									action
-									to={`/todos/${todo.id}`}
-									key={index}
-								>
-									{todo.title}
-									<span className="mx-5">
-										{todo.completed ? "🥳" : "🥵"}
-									</span>
-								</ListGroup.Item>
-							))}
+							{data.map((todo, index) => {
+								const timestamp = firebaseTimestampToString(
+									todo.timestamp
+								);
+								const statusClass = todo.completed
+									? "completed"
+									: "not-completed";
+
+								return (
+									<ListGroup.Item
+										as={Link}
+										action
+										to={`/todos/${todo.id}`}
+										className={`${statusClass} d-flex justify-content-between align-items-center`}
+										key={index}
+									>
+										<span>{todo.title}</span>
+										<div className="timestamp">
+											{timestamp ?? "-"}
+										</div>
+									</ListGroup.Item>
+								);
+							})}
 						</ListGroup>
 					) : (
-						<p>You have No todos!!</p>
+						<p>Yay, you have NO todos 🥳!</p>
 					)}
 				</>
 			)}
