@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { db } from "../firebase";
 import CreateNewTodoForm from "../components/CreateNewTodoForm";
 import useGetTodos from "../hooks/useGetTodos";
-import { firebaseTimestampToString  } from "../helpers/time";
+import { firebaseTimestampToString } from "../helpers/time";
 // const todos = [
 // 	{
 // 		id: '14c9b3244b4a',
@@ -33,11 +33,21 @@ import { firebaseTimestampToString  } from "../helpers/time";
 const TodosPage = () => {
 	// const { data, loading } = useGetTodos();
 
-	const queryFef = query(collection(db, "todos"), orderBy("timestamp","desc"));
-	const { data, isLoading } = useFirestoreQueryData(["todos"], queryFef, {
-		subscribe: true,
-		idField: "id",
-	});
+	const queryFef = query(
+		collection(db, "todos"),
+		orderBy("timestamp", "desc")
+	);
+	const { data, isLoading } = useFirestoreQueryData(
+		["todos"],
+		queryFef,
+		{
+			subscribe: true,
+			idField: "id",
+		},
+		{
+			refetchOnMount: "always",
+		}
+	);
 	console.log(data);
 	return (
 		<Container className="py-3">

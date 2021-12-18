@@ -21,3 +21,9 @@ h1, h2, h3, h4, h5, h6 {
 .completed {
 	background-color: #90ee9088
 }
+
+#spinner {
+	display: grid;
+	place-items: center;
+	height: 100vh;
+}

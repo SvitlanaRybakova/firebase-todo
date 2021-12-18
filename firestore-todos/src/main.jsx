@@ -1,24 +1,28 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import { BrowserRouter } from 'react-router-dom'
+import React from "react";
+import ReactDOM from "react-dom";
+import { BrowserRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
-import App from './App'
-import './App.scss'
+import AuthContextProvider from "./contexts/AuthContext";
+import App from "./App";
+import "./App.scss";
 
 const queryClient = new QueryClient({
 	defaultOptions: {
 		queries: {
 			refetchOnWindowFocus: false,
-			staleTime: 1000 * 10,
-			cacheTime: 1000 * 60 * 30, // 30 mins
+			staleTime: 1000 * 60 * 2, // 2 minutes
+			cacheTime: 1000 * 60 * 60 * 4, // 4 hours
 		},
 	},
 });
+
 ReactDOM.render(
 	<React.StrictMode>
 		<QueryClientProvider client={queryClient}>
 			<BrowserRouter>
-				<App />
+				<AuthContextProvider>
+					<App />
+				</AuthContextProvider>
 			</BrowserRouter>
 		</QueryClientProvider>
 	</React.StrictMode>,
