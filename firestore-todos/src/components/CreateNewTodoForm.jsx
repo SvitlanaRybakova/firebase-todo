@@ -1,19 +1,24 @@
 import React, { useRef } from "react";
 import { Form, Button } from "react-bootstrap";
 import { db } from "../firebase";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-
+import { collection, addDoc, serverTimestamp, doc } from "firebase/firestore";
+import { useAuthContext } from "../contexts/AuthContext";
+//
 const CreateNewTodoForm = () => {
 	const inputTitle = useRef();
-
+	const { currentUser } = useAuthContext();
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		// make firestore doc, plz
 
+		console.log(currentUser);
 		// ignored the empty input
 		if (!inputTitle.current.value) {
 			return;
 		}
+
+		// *create ref to users/id collection (users/Vm9UKtJdi7X2pCneqcpJ70sVSj72)
+		// const refUser = doc(db, "users", currentUser.uid);
 
 		// const ref = collection(db, 'todos')
 		// const docRef = await addDoc(ref, {})
@@ -21,6 +26,8 @@ const CreateNewTodoForm = () => {
 			title: inputTitle.current.value,
 			completed: false,
 			timestamp: serverTimestamp(),
+			// user: refUser,
+			user: currentUser.uid,
 		});
 
 		inputTitle.current.value = "";

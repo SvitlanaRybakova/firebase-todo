@@ -21,6 +21,8 @@ const useAuthContext = () => {
 const AuthContextProvider = ({ children }) => {
 	const [currentUser, setCurrentUser] = useState(null);
 	const [loading, setLoading] = useState(true);
+	const [test, setTest]  = useState('test')
+
 
 	const signup = (email, password) => {
 		return createUserWithEmailAndPassword(auth, email, password);
@@ -72,6 +74,7 @@ const AuthContextProvider = ({ children }) => {
 		setDisplayName,
 		setEmail,
 		setPassword,
+		// test,
 	};
 
 	return (

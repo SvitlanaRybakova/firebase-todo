@@ -1,12 +1,13 @@
 import { useFirestoreQueryData } from "@react-query-firebase/firestore";
-import { collection, orderBy, query } from "firebase/firestore";
+import { collection, orderBy, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { Button, Container, ListGroup } from "react-bootstrap";
+import { Container, ListGroup } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { db } from "../firebase";
 import CreateNewTodoForm from "../components/CreateNewTodoForm";
 import useGetTodos from "../hooks/useGetTodos";
 import { firebaseTimestampToString } from "../helpers/time";
+import { useAuthContext } from "../contexts/AuthContext";
 // const todos = [
 // 	{
 // 		id: '14c9b3244b4a',
@@ -33,8 +34,13 @@ import { firebaseTimestampToString } from "../helpers/time";
 const TodosPage = () => {
 	// const { data, loading } = useGetTodos();
 
+	const { currentUser } = useAuthContext();
+
+	console.log(currentUser);
+	// guery for firebase
 	const queryFef = query(
 		collection(db, "todos"),
+		where("user", "==", currentUser.uid),
 		orderBy("timestamp", "desc")
 	);
 	const { data, isLoading } = useFirestoreQueryData(
